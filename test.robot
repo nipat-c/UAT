@@ -1,17 +1,13 @@
 *** Settings ***
-Library    SeleniumLibrary
-
-*** Variables ***
-${CHROME DRIVER PATH}    /usr/bin/chromedriver
-${USER DATA DIR}         /tmp/chrome-user-data
-${URL}                   https://www.kku.ac.th
+Library  SeleniumLibrary
+Library  OperatingSystem
 
 *** Test Cases ***
 Open KKU Website
+    ${user_data_dir}=    Evaluate    "/tmp/chrome-user-data-" + __import__("uuid").uuid4().hex    modules=uuid
+    Create Directory    ${user_data_dir}
     ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
-    Call Method    ${options}    add_argument    --no-sandbox
-    Call Method    ${options}    add_argument    --disable-dev-shm-usage
-    ${service}=    Evaluate    sys.modules['selenium.webdriver.chrome.service'].Service('${CHROME DRIVER PATH}')    sys, selenium.webdriver
-    Create Webdriver    Chrome    options=${options}    service=${service}
-    Go To    ${URL}
-    Close Browser
+    Call Method    ${options}    add_argument    --user-data-dir=${user_data_dir}
+    Call Method    ${options}    add_argument    --headless=new  # ตัวอย่างเพิ่ม headless mode
+    Open Browser    https://www.kku.ac.th    chrome    options=${options}
+    [Teardown]    Run Keywords    Close Browser    AND    Remove Directory    ${user_data_dir}    recursive=True
