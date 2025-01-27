@@ -2,10 +2,16 @@
 Library    SeleniumLibrary
 
 *** Variables ***
-${SELENIUM GRID URL}    http://host.docker.internal:4444/wd/hub
-${URL}                  https://www.kku.ac.th
+${CHROME DRIVER PATH}    /usr/bin/chromedriver
+${URL}                   https://www.kku.ac.th
 
 *** Test Cases ***
 Open KKU Website
-    Open Browser    ${URL}    chrome    remote_url=${SELENIUM GRID URL}
+    ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
+    Call Method    ${options}    add_argument    --no-sandbox
+    Call Method    ${options}    add_argument    --disable-dev-shm-usage
+    Call Method    ${options}    add_argument    --headless
+    Call Method    ${options}    add_argument    --disable-gpu
+    Create Webdriver    Chrome    options=${options}    executable_path=${CHROME DRIVER PATH}
+    Go To    ${URL}
     Close Browser
