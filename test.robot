@@ -1,3 +1,9 @@
+*** Settings ***
+Library    SeleniumLibrary
+
+*** Variables ***
+${URL}    https://www.kku.ac.th
+
 *** Test Cases ***
 Open KKU Website With Args
     @{args} =    Create List
