@@ -2,14 +2,10 @@
 Library    SeleniumLibrary
 
 *** Variables ***
-${URL}    https://www.kku.ac.th
+${SELENIUM GRID URL}    http://host.docker.internal:4444/wd/hub
+${URL}                  https://www.kku.ac.th
 
 *** Test Cases ***
-Open KKU Website With Args
-    @{args} =    Create List
-    ...    --no-sandbox
-    ...    --disable-dev-shm-usage
-    ...    --user-data-dir=${USER_DATA_DIR}
-    ${options} =    Create Dictionary    args=@{args}
-    Open Browser    ${URL}    Chrome    options=${options}
+Open KKU Website
+    Open Browser    ${URL}    chrome    remote_url=${SELENIUM GRID URL}
     Close Browser
