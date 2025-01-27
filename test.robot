@@ -11,7 +11,6 @@ Open KKU Website
     ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
     Call Method    ${options}    add_argument    --no-sandbox
     Call Method    ${options}    add_argument    --disable-dev-shm-usage
-    Call Method    ${options}    add_argument    --user-data-dir=${USER DATA DIR}
     ${service}=    Evaluate    sys.modules['selenium.webdriver.chrome.service'].Service('${CHROME DRIVER PATH}')    sys, selenium.webdriver
     Create Webdriver    Chrome    options=${options}    service=${service}
     Go To    ${URL}
