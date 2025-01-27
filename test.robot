@@ -12,6 +12,7 @@ Open KKU Website
     Call Method    ${options}    add_argument    --disable-dev-shm-usage
     Call Method    ${options}    add_argument    --headless
     Call Method    ${options}    add_argument    --disable-gpu
-    Create Webdriver    Chrome    options=${options}    executable_path=${CHROME DRIVER PATH}
+    ${service}=    Evaluate    sys.modules['selenium.webdriver.chrome.service'].Service('${CHROME DRIVER PATH}')    sys, selenium.webdriver
+    Create Webdriver    Chrome    options=${options}    service=${service}
     Go To    ${URL}
     Close Browser
